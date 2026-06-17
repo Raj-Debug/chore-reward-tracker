@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chore Quest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f0f0f5;
+      color: #1c1c1e;
+      margin: 0;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 400px;
+      background-color: #ffffff;
+      min-height: 850px;
+      border-radius: 36px;
+      border: 6px solid #e5e5ea;
+      padding: 24px;
+      box-sizing: border-box;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .app-header {
+      padding: 10px 0 16px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-header h1 {
+      font-size: 1.6rem;
+      margin: 0;
+      font-weight: 700;
+      color: #af52de;
+    }
+
+    .subtitle {
+      color: #8e8e93;
+      font-size: 0.75rem;
+      margin: 4px 0 0 0;
+    }
+
+    .user-selector select {
+      background: #f2f2f7;
+      color: #1c1c1e;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Cards */
+    .card {
+      background: #f2f2f7;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1c1c1e;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      padding: 12px 14px;
+      background: #ffffff;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .empty-msg {
+      color: #8e8e93;
+      font-style: italic;
+      justify-content: center;
+      background: none;
+      box-shadow: none;
+    }
+
+    /* Forms */
+    form {
+      margin-top: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    form.inline-form {
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      display: inline;
+    }
+
+    form h3 {
+      margin-top: 0;
+      font-size: 0.75rem;
+      color: #8e8e93;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1px solid #d1d1d6;
+      color: #1c1c1e;
+      border-radius: 10px;
+      box-sizing: border-box;
+      outline: none;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    input:focus, select:focus {
+      border-color: #af52de;
+    }
+
+    /* Buttons */
+    button {
+      background-color: #af52de;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 0.8rem;
+      box-shadow: 0 4px 10px rgba(175, 82, 222, 0.2);
+      transition: transform 0.1s;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .btn-success {
+      background-color: #34c759;
+      box-shadow: 0 4px 10px rgba(52, 199, 89, 0.2);
+    }
+
+    .btn-warning {
+      background-color: #ff9500;
+      box-shadow: 0 4px 10px rgba(255, 149, 0, 0.2);
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #ff3b30;
+      box-shadow: 0 4px 10px rgba(255, 59, 48, 0.2);
+      font-size: 0.7rem;
+      padding: 6px 12px;
+    }
+
+    .btn-redeem {
+      background-color: #007aff;
+      box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
+    }
+
+    .btn-disabled {
+      background-color: #c7c7cc;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .points-badge {
+      background-color: #ff9500;
+      color: white;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .active-badge {
+      background-color: #af52de;
+    }
+
+    .status-pending { color: #ff9500; }
+    .status-completed { color: #34c759; }
+    .status-approved { color: #8e8e93; }
+
+    .chore-meta {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .chore-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .reward-cost {
+      color: #af52de;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .reward-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .error-msg {
+      background: #fff2f2;
+      color: #ff3b30;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div>
+        <h1>Chore Quest</h1>
+        <p class="subtitle">Family Chore & Reward Tracker</p>
+      </div>
+
+      <!-- User Switcher -->
+      <div class="user-selector">
+        <select id="active-user-select" onchange="switchUser(this.value)">
+          <% if (users.length === 0) { %>
+            <option value="">No members</option>
+          <% } %>
+          <% users.forEach(user => { %>
+            <option value="<%= user._id %>" <%= activeUser && activeUser._id.toString() === user._id.toString() ? 'selected' : '' %>>
+              <%= user.avatar %> <%= user.name %> (<%= user.points %> pts)
+            </option>
+          <% }) %>
+        </select>
+      </div>
+    </header>
+
+    <!-- FAMILY MEMBERS -->
+    <div class="card">
+      <h2>Family Members</h2>
+      <ul>
+        <% if (users.length === 0) { %>
+          <li class="empty-msg">No family members yet. Add one below!</li>
+        <% } %>
+        <% users.forEach(user => { %>
+          <li>
+            <span><%= user.avatar %> <%= user.name %></span>
+            <span class="points-badge <%= activeUser && activeUser._id.toString() === user._id.toString() ? 'active-badge' : '' %>">
+              <%= user.points %> pts
+            </span>
+          </li>
+        <% }) %>
+      </ul>
+
+      <form action="/api/users" method="POST">
+        <h3>Add Member</h3>
+        <div class="form-group">
+          <input type="text" name="name" required placeholder="Name (e.g. Alex)">
+        </div>
+        <div class="form-group">
+          <input type="text" name="avatar" value="😊" placeholder="Emoji avatar">
+        </div>
+        <button type="submit">Add Member</button>
+      </form>
+    </div>
+
+    <!-- CHORE BOARD -->
+    <div class="card">
+      <h2>Chore Board</h2>
+      <ul>
+        <% if (chores.length === 0) { %>
+          <li class="empty-msg">No chores yet. Add one below!</li>
+        <% } %>
+        <% chores.forEach(chore => { %>
+          <li>
+            <div>
+              <strong><%= chore.title %></strong><br>
+              <span class="chore-meta status-<%= chore.status %>">
+                <%= chore.status %> (+<%= chore.points %> pts)
+              </span>
+              <% if (chore.assignedTo) { %>
+                <br><span style="font-size: 0.7rem; color: #8e8e93;">Assigned: <%= chore.assignedTo.avatar %> <%= chore.assignedTo.name %></span>
+              <% } %>
+            </div>
+            <div class="chore-actions">
+              <% if (chore.status === 'pending' && activeUser) { %>
+                <form action="/api/chores/<%= chore._id %>/complete" method="POST" class="inline-form">
+                  <input type="hidden" name="activeUser" value="<%= activeUser._id %>">
+                  <button class="btn-success">Complete</button>
+                </form>
+              <% } else if (chore.status === 'completed') { %>
+                <form action="/api/chores/<%= chore._id %>/approve" method="POST" class="inline-form">
+                  <button class="btn-warning">Approve</button>
+                </form>
+              <% } else if (chore.status === 'approved') { %>
+                <span style="font-size: 0.8rem; color: #34c759;">✅ Done</span>
+              <% } %>
+              <form action="/api/chores/<%= chore._id %>/delete" method="POST" class="inline-form">
+                <button class="btn-danger">✕</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+
+      <form action="/api/chores" method="POST">
+        <h3>Add Chore</h3>
+        <div class="form-group">
+          <input type="text" name="title" required placeholder="Chore title">
+        </div>
+        <div class="form-group">
+          <input type="text" name="description" placeholder="Description (optional)">
+        </div>
+        <div class="form-group">
+          <input type="number" name="points" required placeholder="Points" min="1">
+        </div>
+        <div class="form-group">
+          <select name="assignedTo">
+            <option value="">Assign to... (optional)</option>
+            <% users.forEach(user => { %>
+              <option value="<%= user._id %>"><%= user.avatar %> <%= user.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <button type="submit">Create Chore</button>
+      </form>
+    </div>
+
+    <!-- REWARDS SHOP -->
+    <div class="card">
+      <h2>Rewards Shop</h2>
+      <ul>
+        <% if (rewards.length === 0) { %>
+          <li class="empty-msg">No rewards yet. Add one below!</li>
+        <% } %>
+        <% rewards.forEach(reward => { %>
+          <li>
+            <div>
+              <strong><%= reward.title %></strong><br>
+              <span class="reward-cost"><%= reward.cost %> pts</span>
+              <% if (reward.stock !== -1) { %>
+                <span style="font-size: 0.7rem; color: #8e8e93;"> · <%= reward.stock %> left</span>
+              <% } %>
+            </div>
+            <div class="reward-actions">
+              <% if (activeUser && activeUser.points >= reward.cost && (reward.stock === -1 || reward.stock > 0)) { %>
+                <form action="/api/rewards/<%= reward._id %>/redeem" method="POST" class="inline-form">
+                  <input type="hidden" name="activeUser" value="<%= activeUser._id %>">
+                  <button class="btn-redeem">Redeem</button>
+                </form>
+              <% } else { %>
+                <button class="btn-disabled" disabled>Redeem</button>
+              <% } %>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+
+      <form action="/api/rewards" method="POST">
+        <h3>Add Reward</h3>
+        <div class="form-group">
+          <input type="text" name="title" required placeholder="Reward title">
+        </div>
+        <div class="form-group">
+          <input type="text" name="description" placeholder="Description (optional)">
+        </div>
+        <div class="form-group">
+          <input type="number" name="cost" required placeholder="Cost (points)" min="1">
+        </div>
+        <div class="form-group">
+          <input type="number" name="stock" placeholder="Stock (leave empty = unlimited)" min="1">
+        </div>
+        <button type="submit">Create Reward</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    function switchUser(userId) {
+      if (userId) {
+        window.location.search = '?activeUser=' + userId;
+      }
+    }
+  </script>
+
+</body>
+</html>
