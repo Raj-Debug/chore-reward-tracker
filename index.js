@@ -148,6 +148,31 @@ app.post('/api/rewards', async (req, res) => {
     }
 });
 
+// Delete a family member
+app.post('/api/users/:id/delete', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Remove references from chores
+        await Chore.updateMany(
+            { assignedTo: userId },
+            { $set: { assignedTo: null } }
+        );
+
+        await Chore.updateMany(
+            { completedBy: userId },
+            { $set: { completedBy: null } }
+        );
+
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        res.redirect('/');
+    } catch (err) {
+        res.status(500).send('Error deleting member: ' + err.message);
+    }
+});
+
 // Redeem a reward (spend points)
 app.post('/api/rewards/:id/redeem', async (req, res) => {
     try {
