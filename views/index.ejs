@@ -284,33 +284,63 @@
     </header>
 
     <!-- FAMILY MEMBERS -->
-    <div class="card">
-      <h2>Family Members</h2>
-      <ul>
-        <% if (users.length === 0) { %>
-          <li class="empty-msg">No family members yet. Add one below!</li>
-        <% } %>
-        <% users.forEach(user => { %>
-          <li>
-            <span><%= user.avatar %> <%= user.name %></span>
-            <span class="points-badge <%= activeUser && activeUser._id.toString() === user._id.toString() ? 'active-badge' : '' %>">
-              <%= user.points %> pts
-            </span>
-          </li>
-        <% }) %>
-      </ul>
+   <!-- FAMILY MEMBERS -->
+<div class="card">
+  <h2>Family Members</h2>
 
-      <form action="/api/users" method="POST">
-        <h3>Add Member</h3>
-        <div class="form-group">
-          <input type="text" name="name" required placeholder="Name (e.g. Alex)">
+  <ul>
+    <% if (users.length === 0) { %>
+      <li class="empty-msg">No family members yet. Add one below!</li>
+    <% } %>
+
+    <% users.forEach(user => { %>
+      <li>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span><%= user.avatar %> <%= user.name %></span>
         </div>
-        <div class="form-group">
-          <input type="text" name="avatar" value="😊" placeholder="Emoji avatar">
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="points-badge <%= activeUser && activeUser._id.toString() === user._id.toString() ? 'active-badge' : '' %>">
+            <%= user.points %> pts
+          </span>
+
+          <form
+            action="/api/users/<%= user._id %>/delete"
+            method="POST"
+            class="inline-form"
+            onsubmit="return confirm('Delete <%= user.name %>?')"
+          >
+            <button type="submit" class="btn-danger">✕</button>
+          </form>
         </div>
-        <button type="submit">Add Member</button>
-      </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <form action="/api/users" method="POST">
+    <h3>Add Member</h3>
+
+    <div class="form-group">
+      <input
+        type="text"
+        name="name"
+        required
+        placeholder="Name (e.g. Alex)"
+      >
     </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        name="avatar"
+        value="😊"
+        placeholder="Emoji avatar"
+      >
+    </div>
+
+    <button type="submit">Add Member</button>
+  </form>
+</div>
 
     <!-- CHORE BOARD -->
     <div class="card">
