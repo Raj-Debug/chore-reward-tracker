@@ -187,15 +187,23 @@ app.post('/api/rewards/:id/redeem', async (req, res) => {
 // =============================================
 // DATABASE CONNECTION & START SERVER
 // =============================================
-mongoose
-    .connect(process.env.MONGODB_URI)
-    .then(() => {
-        console.log('Successfully connected to MongoDB.');
-    })
-    .catch((err) => {
-        console.error('Database connection error:', err.message);
-    });
+async function startServer() {
+    try {
+        console.log("Mongo URI exists:", !!process.env.MONGODB_URI);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+        await mongoose.connect(process.env.MONGODB_URI);
+
+        console.log("Successfully connected to MongoDB.");
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    } catch (err) {
+        console.error("Database connection error:");
+        console.error(err);
+        process.exit(1);
+    }
+}
+
+startServer();
